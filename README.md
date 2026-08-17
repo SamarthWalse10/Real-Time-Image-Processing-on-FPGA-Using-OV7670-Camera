@@ -67,7 +67,7 @@ The core of this project is the `rgb444_processing_pipelined_bram_linebuffer.v` 
 2. **Grayscale Conversion**: Converts the 12-bit RGB data to luminance using fixed-point arithmetic:
    $Y = 0.299R + 0.587G + 0.114B$
 3. **Sobel Edge Detection**: Utilizes 3x3 convolution kernels to approximate the derivative of the image, highlighting sharp intensity changes (edges).
-   
+
    $$G_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}, G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix}$$
    
    The final gradient magnitude is computed as $G = \sqrt{G_x^2 + G_y^2}$ using a hardware lookup table (`sqrt_mem`) for the square root.
@@ -98,6 +98,20 @@ The design was synthesized and implemented on the Xilinx Artix-7 (xc7a100t) FPGA
 | **Dynamic Power** | 0.033 W |
 
 *(The system operates with extreme power efficiency, making it highly suitable for embedded vision and IoT applications.)*
+
+---
+
+## Results
+*(Create an `images` folder in your repository, upload your exported frames from the report, and update the links below to display them).*
+
+* **Raw RGB444 Frame:**
+  ![Raw RGB444 Frame](images/raw_rgb444.png)
+* **Processed Grayscale Frame:**
+  ![Processed Grayscale Frame](images/grayscale.png)
+* **Processed Sobel Edge Detected Frame:**
+  ![Sobel Edge Detection](images/sobel.png)
+* **Processed Sharpened Frame:**
+  ![Custom Sharpening](images/sharpened.png)
 
 ---
 
