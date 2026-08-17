@@ -52,7 +52,7 @@ Drives the external monitor using standard VGA timing protocols.
 * Vertical Timing: 525 total lines (480 active, 10 front porch, 2 sync pulse, 33 back porch).
 * Outputs `HSYNC`, `VSYNC`, and 12-bit RGB data to the monitor.
 
-### 6. Support Modules
+### 6. Support Modules (`clk_divider.v`, `debounce.v`, `line_buffer.v`)
 * **`clk_divider.v`**: Derives the 25 MHz system clock from the Nexys-4's native 100 MHz oscillator.
 * **`debounce.v`**: Filters mechanical bounce from physical button presses, enforcing a 20ms stabilization period before registering an input.
 * **`line_buffer.v`**: Stores 3 consecutive rows of pixel data simultaneously, which is mathematically required to perform 3x3 matrix convolutions on the video stream.
@@ -68,13 +68,13 @@ The core of this project is the `rgb444_processing_pipelined_bram_linebuffer.v` 
    $Y = 0.299R + 0.587G + 0.114B$
 3. **Sobel Edge Detection**: Utilizes 3x3 convolution kernels to approximate the derivative of the image, highlighting sharp intensity changes (edges).
 
-   $$G_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}, G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix}$$
+   $$G_x = \begin{bmatrix} -1 & 0 & 1 \cr -2 & 0 & 2 \cr -1 & 0 & 1 \end{bmatrix}, G_y = \begin{bmatrix} -1 & -2 & -1 \cr 0 & 0 & 0 \cr 1 & 2 & 1 \end{bmatrix}$$
    
    The final gradient magnitude is computed as $G = \sqrt{G_x^2 + G_y^2}$ using a hardware lookup table (`sqrt_mem`) for the square root.
 
 4. **Custom Sharpening**: Applies a spatial high-pass filter using a custom 3x3 kernel to enhance local contrast and sharpen the image.
 
-   $$K = \begin{bmatrix} 0 & -1 & 0 \\ -1 & 5 & -1 \\ 0 & -1 & 0 \end{bmatrix}$$
+   $$K = \begin{bmatrix} 0 & -1 & 0 \cr -1 & 5 & -1 \cr 0 & -1 & 0 \end{bmatrix}$$
 
 ---
 
@@ -119,6 +119,7 @@ The design was synthesized and implemented on the Xilinx Artix-7 (xc7a100t) FPGA
 * **Processed Sharpened Frame:**
 <img width="1311" height="777" alt="Screenshot 2026-08-18 025008" src="https://github.com/user-attachments/assets/9fbf943a-b7b8-4c5e-bd38-a14c7f13baf4" />
 &nbsp;
+
 
 ---
 
