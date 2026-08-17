@@ -105,13 +105,13 @@ The design was synthesized and implemented on the Xilinx Artix-7 (xc7a100t) FPGA
 *(Create an `images` folder in your repository, upload your exported frames from the report, and update the links below to display them).*
 
 * **Raw RGB444 Frame:**
-  ![Raw RGB444 Frame](images/raw_rgb444.png)
+<img width="1310" height="780" alt="Screenshot 2026-08-18 024917" src="https://github.com/user-attachments/assets/fdb8948e-0644-4ebb-98e7-5fd9fd9aa728" />
 * **Processed Grayscale Frame:**
-  ![Processed Grayscale Frame](images/grayscale.png)
+<img width="1373" height="818" alt="Screenshot 2026-08-18 025036" src="https://github.com/user-attachments/assets/902d1ed9-94a3-4ce2-9742-02a70865aedc" />
 * **Processed Sobel Edge Detected Frame:**
-  ![Sobel Edge Detection](images/sobel.png)
+<img width="1309" height="777" alt="Screenshot 2026-08-18 024943" src="https://github.com/user-attachments/assets/916ac63f-cf5b-4530-8b59-83b97d01aee9" />
 * **Processed Sharpened Frame:**
-  ![Custom Sharpening](images/sharpened.png)
+<img width="1311" height="777" alt="Screenshot 2026-08-18 025008" src="https://github.com/user-attachments/assets/9fbf943a-b7b8-4c5e-bd38-a14c7f13baf4" />
 
 ---
 
