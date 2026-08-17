@@ -70,29 +70,29 @@ Applies a signed offset to the raw R, G, and B channels before further processin
 #### 2. Grayscale Conversion
 Converts the 12-bit RGB data to luminance using fixed-point arithmetic:
 
-$$
+```math
 Y = 0.299R + 0.587G + 0.114B
-$$
+```
 
 #### 3. Sobel Edge Detection
 Utilizes 3x3 convolution kernels to approximate the derivative of the image, highlighting sharp intensity changes (edges).
 
-$$
+```math
 G_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}, \quad G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix}
-$$
+```
 
 The final gradient magnitude is computed as follows, using a hardware lookup table (`sqrt_mem`) for the square root:
 
-$$
+```math
 G = \sqrt{G_x^2 + G_y^2}
-$$
+```
 
 #### 4. Custom Sharpening
 Applies a spatial high-pass filter using a custom 3x3 kernel to enhance local contrast and sharpen the image.
 
-$$
+```math
 K = \begin{bmatrix} 0 & -1 & 0 \\ -1 & 5 & -1 \\ 0 & -1 & 0 \end{bmatrix}
-$$
+```
 
 ---
 
