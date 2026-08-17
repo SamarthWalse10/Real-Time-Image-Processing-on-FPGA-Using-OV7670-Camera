@@ -52,7 +52,7 @@ Drives the external monitor using standard VGA timing protocols.
 * Vertical Timing: 525 total lines (480 active, 10 front porch, 2 sync pulse, 33 back porch).
 * Outputs `HSYNC`, `VSYNC`, and 12-bit RGB data to the monitor.
 
-### 6. Support Modules (`clk_divider.v`, `debounce.v`, `line_buffer.v`)
+### 6. Support Modules
 * **`clk_divider.v`**: Derives the 25 MHz system clock from the Nexys-4's native 100 MHz oscillator.
 * **`debounce.v`**: Filters mechanical bounce from physical button presses, enforcing a 20ms stabilization period before registering an input.
 * **`line_buffer.v`**: Stores 3 consecutive rows of pixel data simultaneously, which is mathematically required to perform 3x3 matrix convolutions on the video stream.
@@ -119,7 +119,6 @@ The design was synthesized and implemented on the Xilinx Artix-7 (xc7a100t) FPGA
 * **Processed Sharpened Frame:**
 <img width="1311" height="777" alt="Screenshot 2026-08-18 025008" src="https://github.com/user-attachments/assets/9fbf943a-b7b8-4c5e-bd38-a14c7f13baf4" />
 &nbsp;
-
 
 ---
 
