@@ -1,12 +1,12 @@
 # Real-Time Image Processing on FPGA Using OV7670 Camera
 
 ## Project Overview
-This repository contains a complete Register Transfer Level (RTL) implementation of a real-time image processing system deployed on a Nexys-4 DDR FPGA (Xilinx Artix-7). The system interfaces with an OV7670 camera module to capture 640x480 RGB444 video, processes the video stream through a hardware-accelerated 10-stage pipeline, and drives the output to a VGA monitor at a smooth 60 Frames Per Second (FPS). 
+This repository contains a complete Register Transfer Level (RTL) implementation of a real-time image processing system deployed on a Nexys-4 DDR FPGA (Xilinx Artix-7). The system interfaces with an OV7670 camera module to capture 640x480 RGB444 video, processes the video stream through a hardware-accelerated 10-stage pipeline, and drives the output to a VGA monitor at a smooth 60 Frames Per Second (FPS).
 
 ## Key Features
 * **High-Resolution Real-Time Processing**: Achieves 640x480@60Hz video capture and display with minimal latency.
 * **Hardware-Accelerated Computer Vision**: Implements convolution kernels and color space conversions entirely in hardware without the use of a soft-core processor.
-* **Selectable Video Modes**: 
+* **Selectable Video Modes**:
   * Raw RGB444 Passthrough
   * Grayscale Conversion
   * Sobel Edge Detection
@@ -21,7 +21,7 @@ This repository contains a complete Register Transfer Level (RTL) implementation
 The system is highly modular, breaking down the complex task of video processing into distinct, specialized hardware blocks.
 
 ### 1. Top-Level Integration (`top.v`)
-Acts as the central integration hub for the entire system. 
+Acts as the central integration hub for the entire system.
 * Instantiates all sub-modules (camera capture, processing pipeline, BRAM, VGA controller).
 * Manages clock domains, distributing the 25 MHz clock to both the camera logic and VGA logic.
 * Routes user inputs (switches for mode selection, buttons for brightness control) to the processing pipeline.
@@ -63,23 +63,36 @@ Drives the external monitor using standard VGA timing protocols.
 The core of this project is the `rgb444_processing_pipelined_bram_linebuffer.v` module. To maintain a 60 FPS throughput, the mathematical operations are distributed across a deeply pipelined, 10-stage architecture.
 
 ### Pipeline Operations
-1. **Dynamic Brightness Control**: Applies a signed offset to the raw R, G, and B channels before further processing, dynamically clamping values to prevent overflow/underflow.
 
-2. **Grayscale Conversion**: Converts the 12-bit RGB data to luminance using fixed-point arithmetic:
-   
-   $Y = 0.299R + 0.587G + 0.114B$
+#### 1. Dynamic Brightness Control
+Applies a signed offset to the raw R, G, and B channels before further processing, dynamically clamping values to prevent overflow/underflow.
 
-3. **Sobel Edge Detection**: Utilizes 3x3 convolution kernels to approximate the derivative of the image, highlighting sharp intensity changes (edges).
+#### 2. Grayscale Conversion
+Converts the 12-bit RGB data to luminance using fixed-point arithmetic:
 
-   $$G_x = \begin{bmatrix} -1 & 0 & 1 \\\\ -2 & 0 & 2 \\\\ -1 & 0 & 1 \end{bmatrix}, G_y = \begin{bmatrix} -1 & -2 & -1 \\\\ 0 & 0 & 0 \\\\ 1 & 2 & 1 \end{bmatrix}$$
-   
-   The final gradient magnitude is computed as follows, using a hardware lookup table (`sqrt_mem`) for the square root:
+$$
+Y = 0.299R + 0.587G + 0.114B
+$$
 
-   $$G = \sqrt{G_x^2 + G_y^2}$$
+#### 3. Sobel Edge Detection
+Utilizes 3x3 convolution kernels to approximate the derivative of the image, highlighting sharp intensity changes (edges).
 
-4. **Custom Sharpening**: Applies a spatial high-pass filter using a custom 3x3 kernel to enhance local contrast and sharpen the image.
+$$
+G_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}, \quad G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix}
+$$
 
-   $$K = \begin{bmatrix} 0 & -1 & 0 \\\\ -1 & 5 & -1 \\\\ 0 & -1 & 0 \end{bmatrix}$$
+The final gradient magnitude is computed as follows, using a hardware lookup table (`sqrt_mem`) for the square root:
+
+$$
+G = \sqrt{G_x^2 + G_y^2}
+$$
+
+#### 4. Custom Sharpening
+Applies a spatial high-pass filter using a custom 3x3 kernel to enhance local contrast and sharpen the image.
+
+$$
+K = \begin{bmatrix} 0 & -1 & 0 \\ -1 & 5 & -1 \\ 0 & -1 & 0 \end{bmatrix}
+$$
 
 ---
 
@@ -125,7 +138,6 @@ The design was synthesized and implemented on the Xilinx Artix-7 (xc7a100t) FPGA
 <img width="1311" height="777" alt="Screenshot 2026-08-18 025008" src="https://github.com/user-attachments/assets/9fbf943a-b7b8-4c5e-bd38-a14c7f13baf4" />
 &nbsp;
 
-
 ---
 
 ## Repository Structure
@@ -155,3 +167,4 @@ The design was synthesized and implemented on the Xilinx Artix-7 (xc7a100t) FPGA
 │   └── Nexys-4-DDR-Master.xdc                           # Physical pin mappings
 └── bitstream/
     └── Group_7_EE560_Bitstream.bit                      # Compiled bitstream for direct deployment
+```
