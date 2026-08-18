@@ -168,3 +168,4 @@ The design was synthesized and implemented on the Xilinx Artix-7 (xc7a100t) FPGA
 └── bitstream/
     └── Group_7_EE560_Bitstream.bit                      # Compiled bitstream for direct deployment
 ```
+
